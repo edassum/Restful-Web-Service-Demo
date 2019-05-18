@@ -1,10 +1,12 @@
 package com.myapp.rest.webservices.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -20,6 +22,17 @@ public class User {
 
 	@Past
 	private Date birthDate;
+
+	@OneToMany(mappedBy="user")
+	private List<PostV1> posts;
+
+	public List<PostV1> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<PostV1> posts) {
+		this.posts = posts;
+	}
 
 	public User() {
 	}
