@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myapp.rest.webservices.domain.PostV1;
 import com.myapp.rest.webservices.domain.User;
 import com.myapp.rest.webservices.exceptions.UserNotFoundException;
 import com.myapp.rest.webservices.repo.UserRepository;
-import com.myapp.rest.webservices.service.UserDaoService;
 
 @RestController
 public class UserJPAController {
@@ -34,5 +34,15 @@ public class UserJPAController {
 		}
 		User user = userVal.get();
 		return user;
+	}
+	
+	@GetMapping(value = "/jpa/users/{id}/posts")
+	public List<PostV1> findAllPostsForAUser(@PathVariable int id) {
+		Optional<User> userOptional = userRepo.findById(id);
+		if (!(userOptional.isPresent())) {
+			throw new UserNotFoundException("User with id-" + id + " not found");
+		}
+		List<PostV1> posts = userOptional.get().getPosts();
+		return posts;
 	}
 }
